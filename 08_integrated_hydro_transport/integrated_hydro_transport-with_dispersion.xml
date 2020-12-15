@@ -120,7 +120,7 @@
     </ParameterList>
     <ParameterList name="PK tree">
       <ParameterList name="Flow and Reactive Transport">
-        <Parameter name="PK type" type="string" value="flow reactive transport ATS" />
+        <Parameter name="PK type" type="string" value="flow reactive transport" />
         <ParameterList name="surface-subsurface flow coupler">
           <Parameter name="PK type" type="string" value="coupled water" />
           <ParameterList name="flow">
@@ -248,9 +248,11 @@
       </ParameterList>
 
       <ParameterList name="boundary conditions">
-        <ParameterList name="head">
+        <ParameterList name="static head">
+          
           <ParameterList name="east">
             <Parameter name="regions" type="Array(string)" value="{east face}" />
+	        <Parameter name="spatial distribution method" type="string" value="none"/>
             <ParameterList name="boundary head">
               <ParameterList name="function-static-head">
                 <Parameter name="p0" type="double" value="101325.0" />
@@ -265,6 +267,7 @@
               </ParameterList>
             </ParameterList>
           </ParameterList>
+          
         </ParameterList>
       </ParameterList>
 
@@ -376,6 +379,36 @@
         </ParameterList>
       </ParameterList>
 
+      <ParameterList name="diffusion">
+        <Parameter name="discretization primary" type="string" value="mfd: optimized for monotonicity" />
+        <Parameter name="discretization secondary" type="string" value="mfd: two-point flux approximation" />
+        <Parameter name="schema" type="Array(string)" value="{face, cell}" />
+        <Parameter name="preconditioner schema" type="Array(string)" value="{face}" />
+      </ParameterList>
+
+      <ParameterList name="inverse">
+        <Parameter name="iterative method" type="string" value="pcg" />
+        <Parameter name="preconditioning method" type="string" value="boomer amg" />
+        <ParameterList name="pcg parameters">
+          <Parameter name="maximum number of iterations" type="int" value="400" />
+          <Parameter name="error tolerance" type="double" value="1e-10" />
+          <Parameter name="convergence criteria" type="Array(string)" value="{relative rhs, make one iteration}" />
+          <ParameterList name="verbose object">
+            <Parameter name="verbosity level" type="string" value="high" />
+          </ParameterList>
+        </ParameterList>
+        <ParameterList name="boomer amg parameters">
+          <Parameter name="tolerance" type="double" value="0.0" />
+          <Parameter name="smoother sweeps" type="int" value="1" />
+          <Parameter name="cycle applications" type="int" value="1" />
+          <Parameter name="strong threshold" type="double" value="0.65" />
+          <ParameterList name="verbose object">
+            <Parameter name="verbosity level" type="string" value="medium" />
+          </ParameterList>
+        </ParameterList>
+      </ParameterList>
+
+<!--
       <ParameterList name="operators">
         <ParameterList name="diffusion operator">
           <ParameterList name="matrix">
@@ -386,20 +419,27 @@
           </ParameterList>
         </ParameterList>
       </ParameterList>
+-->
 
       <ParameterList name="boundary conditions">
         <ParameterList name="concentration">
-          <ParameterList name="coupling">
+          <!--  ParameterList name="coupling"> -->
             <ParameterList name="BC coupling">
               <Parameter name="spatial distribution method" type="string" value="domain coupling" />
-              <Parameter name="submodel" type="string" value="field" />
+              <Parameter name="submodel" type="string" value="conserved quantity" />
               <Parameter name="regions" type="Array(string)" value="{top face}" />
+<!--
               <ParameterList name="boundary concentration">
                 <Parameter name="field_out_key" type="string" value="surface-total_component_concentration" />
                 <Parameter name="copy_field_out_key" type="string" value="default" />
               </ParameterList>
+-->
+              <ParameterList name="fields">
+                <Parameter name="conserved_quantity_key" type="string" value="surface-total_component_quantity" />
+                <Parameter name="field_out_key" type="string" value="surface-total_component_concentration" />
+              </ParameterList>
             </ParameterList>
-          </ParameterList>
+          <!-- /ParameterList> -->
         </ParameterList>
       </ParameterList>
 
@@ -444,31 +484,34 @@
       <ParameterList name="source terms">
         <ParameterList name="concentration">
           <ParameterList name="Tc-99">
-            <ParameterList name="SOURCE: Tracer">
+            <!-- ParameterList name="SOURCE: Tracer"> -->
+              <Parameter name="component names" type="Array(string)" value="{Tc-99}" />
               <Parameter name="regions" type="Array(string)" value="{tracer source}" />
               <Parameter name="spatial distribution method" type="string" value="volume" />
-              <ParameterList name="sink">
+              <ParameterList name="source function">
                 <ParameterList name="function-tabular">
                   <Parameter name="y values" type="Array(double)" value="{1.0,0.0}" />
                   <Parameter name="x values" type="Array(double)" value="{0.0,10.0}" />
                   <Parameter name="forms" type="Array(string)" value="{constant}" />
                 </ParameterList>
               </ParameterList>
-            </ParameterList>
+            <!-- /ParameterList> -->
           </ParameterList>
-          <ParameterList name="coupling">
-            <ParameterList name="Surface">
+
+          <ParameterList name="surface coupling">
+            <!--  ParameterList name="Surface"> -->
               <Parameter name="regions" type="Array(string)" value="{surface domain}" />
               <Parameter name="spatial distribution method" type="string" value="domain coupling" />
               <Parameter name="submodel" type="string" value="rate" />
-              <ParameterList name="sink">
+              <ParameterList name="fields">
                 <Parameter name="flux_key" type="string" value="mass_flux" />
                 <Parameter name="copy_flux_key" type="string" value="next_timestep" />
                 <Parameter name="field_out_key" type="string" value="total_component_concentration" />
                 <Parameter name="field_in_key" type="string" value="surface-total_component_concentration" />
               </ParameterList>
-            </ParameterList>
+            <!-- /ParameterList> -->
           </ParameterList>
+ 
         </ParameterList>
       </ParameterList>
 
@@ -500,7 +543,7 @@
         <Parameter name="field evaluator type" type="string" value="overland pressure water content" />
       </ParameterList>
 
-      <ParameterList name="surface-mass_source">
+      <ParameterList name="surface-water_source">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <ParameterList name="function">
           <ParameterList name="domain rain">
@@ -610,7 +653,9 @@
         <ParameterList name="function" type="ParameterList">
           <ParameterList name="domain" type="ParameterList">
             <Parameter name="region" type="string" value="surface domain" />
+            <!--
             <Parameter name="components" type="Array(string)" value="{cell}" />
+            -->
             <Parameter name="components" type="Array(string)" value="{cell,boundary_face}" />
             <ParameterList name="function" type="ParameterList">
               <ParameterList name="function-constant" type="ParameterList">
@@ -624,7 +669,7 @@
       <ParameterList name="base_porosity">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <ParameterList name="function">
-          <ParameterList name="rest domain">
+          <ParameterList name="domain">
             <Parameter name="region" type="string" value="computational domain" />
             <Parameter name="component" type="string" value="cell" />
             <ParameterList name="function">
@@ -652,7 +697,7 @@
       <ParameterList name="surface-porosity">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <ParameterList name="function">
-          <ParameterList name="rest domain">
+          <ParameterList name="surface domain">
             <Parameter name="region" type="string" value="surface domain" />
             <Parameter name="components" type="Array(string)" value="{cell}" />
             <ParameterList name="function">
@@ -690,7 +735,7 @@
       <ParameterList name="surface-temperature">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <ParameterList name="function">
-          <ParameterList name="domain">
+          <ParameterList name="surface domain">
             <Parameter name="region" type="string" value="surface domain" />
             <Parameter name="component" type="string" value="cell" />
             <ParameterList name="function">

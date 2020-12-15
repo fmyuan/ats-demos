@@ -451,7 +451,7 @@
   <ParameterList name="state" type="ParameterList">
     <ParameterList name="field evaluators" type="ParameterList">
 
-      <ParameterList name="surface-mass_source" type="ParameterList">
+      <ParameterList name="surface-water_source" type="ParameterList">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <Parameter name="constant in time" type="bool" value="true" />
         <ParameterList name="function" type="ParameterList">
