@@ -240,7 +240,7 @@
         <Parameter name="field evaluator type" type="string" value="overland pressure water content" />
       </ParameterList>
 
-      <ParameterList name="surface-mass_source" type="ParameterList">
+      <ParameterList name="surface-water_source" type="ParameterList">
         <Parameter name="field evaluator type" type="string" value="additive evaluator" />
         <Parameter name="evaluator dependencies" type="Array(string)" value="{surface-precipitation, surface-total_evapotranspiration}" />
         <Parameter name="surface-precipitation coefficient" type="double" value="55000.0" />
@@ -437,6 +437,7 @@
       <Parameter name="times start period stop" type="Array(double)" value="{0.0,0.1,-1.0}" />
       <Parameter name="times start period stop units" type="string" value="d" />
     </ParameterList>
+
     <ParameterList name="transpiration" type="ParameterList">
       <Parameter name="observation output filename" type="string" value="transpiration.dat" />
       <Parameter name="write interval" type="int" value="1" />
@@ -447,19 +448,20 @@
       <ParameterList name="observed quantities" type="ParameterList">
         <ParameterList name="surface-potential_evapotranspiration" type="ParameterList">
           <Parameter name="variable" type="string" value="surface-potential_evapotranspiration" />
-          <Parameter name="direction normalized flux" type="bool" value="true" />
+          <!-- Parameter name="direction normalized flux" type="bool" value="true" /> -->
           <Parameter name="region" type="string" value="surface domain" />
           <Parameter name="functional" type="string" value="integral" />
           <Parameter name="location name" type="string" value="cell" />
         </ParameterList>
         <ParameterList name="surface-total_evapotranspiration" type="ParameterList">
           <Parameter name="variable" type="string" value="surface-total_evapotranspiration" />
-          <Parameter name="direction normalized flux" type="bool" value="true" />
+          <!-- Parameter name="direction normalized flux" type="bool" value="true" /> -->
           <Parameter name="region" type="string" value="surface domain" />
           <Parameter name="functional" type="string" value="integral" />
           <Parameter name="location name" type="string" value="cell" />
         </ParameterList>
       </ParameterList>
     </ParameterList>
+ 
   </ParameterList>
 </ParameterList>
