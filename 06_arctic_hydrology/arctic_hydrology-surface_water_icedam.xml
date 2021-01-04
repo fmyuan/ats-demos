@@ -273,7 +273,7 @@
         <Parameter name="field evaluator type" type="string" value="unfrozen effective depth" />
       </ParameterList>
 
-      <ParameterList name="surface-mass_source" type="ParameterList">
+      <ParameterList name="surface-water_source" type="ParameterList">
         <Parameter name="field evaluator type" type="string" value="independent variable" />
         <ParameterList name="function" type="ParameterList">
           <ParameterList name="cells" type="ParameterList">
@@ -291,7 +291,7 @@
       <ParameterList name="surface-total_energy_source" type="ParameterList">
         <Parameter name="field evaluator type" type="string" value="advected energy source" />
         <Parameter name="external enthalpy key" type="string" value="surface-source_internal_energy" />
-        <Parameter name="mass source units" type="string" value="m s^-1" />
+        <Parameter name="water source units" type="string" value="mol s^-1" />
         <Parameter name="include conduction" type="bool" value="false" />
       </ParameterList>
 
