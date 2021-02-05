@@ -162,7 +162,7 @@
       <Parameter name="PKs order" type="Array(string)" value="{coupled SEB and permafrost, surface-subsurface transport coupler}" />
       <Parameter name="master PK index" type="int" value="0" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="extreme" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
     </ParameterList>
@@ -177,7 +177,7 @@
       <Parameter name="debug cells" type="Array(int)" value="{0,20}" />
       <Parameter name="distribution time" type="double" value="86400.0" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="precipitation function" type="ParameterList">
@@ -204,11 +204,11 @@
           <Parameter name="diverged tolerance" type="double" value="1000000.0" />
           <Parameter name="limit iterations" type="int" value="21" />
           <ParameterList name="verbose object" type="ParameterList">
-            <Parameter name="verbosity level" type="string" value="high" />
+            <Parameter name="verbosity level" type="string" value="medium" />
           </ParameterList>
         </ParameterList>
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="timestep controller smarter parameters" type="ParameterList">
           <Parameter name="max iterations" type="int" value="18" />
@@ -240,7 +240,7 @@
           <Parameter name="tolerance" type="double" value="0.0" />
         </ParameterList>
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
@@ -285,11 +285,11 @@
           <Parameter name="diverged tolerance" type="double" value="1000000.0" />
           <Parameter name="limit iterations" type="int" value="21" />
           <ParameterList name="verbose object" type="ParameterList">
-            <Parameter name="verbosity level" type="string" value="high" />
+            <Parameter name="verbosity level" type="string" value="medium" />
           </ParameterList>
         </ParameterList>
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="timestep controller smarter parameters" type="ParameterList">
           <Parameter name="max iterations" type="int" value="18" />
@@ -304,7 +304,7 @@
       </ParameterList>
 
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
     </ParameterList>
@@ -318,21 +318,21 @@
       <Parameter name="supress Jacobian terms: d div K grad T / dp" type="bool" value="false" />
       <Parameter name="supress Jacobian terms: d div hq / dp,T" type="bool" value="false" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="ewc delegate" type="ParameterList">
         <Parameter name="freeze-thaw cusp width [K]" type="double" value="0.1" />
         <Parameter name="predictor type" type="string" value="smart ewc" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
       </ParameterList>
 
       <ParameterList name="surface ewc delegate" type="ParameterList">
         <Parameter name="predictor type" type="string" value="none" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
       </ParameterList>
 
@@ -342,7 +342,7 @@
         <Parameter name="damp and cap the saturated spurt" type="bool" value="true" />
         <Parameter name="cap over atmospheric" type="double" value="0.1" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
       </ParameterList>
 
@@ -357,7 +357,7 @@
           <Parameter name="number of functions" type="int" value="2" />
         </ParameterList>
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
@@ -365,7 +365,7 @@
           <Parameter name="convergence criteria" type="Array(string)" value="{relative residual,make one iteration}" />
           <Parameter name="maximum number of iteration" type="int" value="80" />
           <ParameterList name="verbose object" type="ParameterList">
-            <Parameter name="verbosity level" type="string" value="high" />
+            <Parameter name="verbosity level" type="string" value="medium" />
           </ParameterList>
         </ParameterList>
       </ParameterList>
@@ -386,7 +386,7 @@
       <Parameter name="permeability rescaling" type="double" value="10000000.0" />
       <Parameter name="debug cells" type="Array(int)" value="{3423}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -451,7 +451,7 @@
       <Parameter name="initial time step" type="double" value="86400.0" />
       <Parameter name="debug cells" type="Array(int)" value="{0}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -491,7 +491,7 @@
       <Parameter name="supress advective terms in preconditioner" type="bool" value="true" />
       <Parameter name="debug cells" type="Array(int)" value="{3423}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -563,7 +563,7 @@
       <Parameter name="initial time step" type="double" value="86400.0" />
       <Parameter name="debug cells" type="Array(int)" value="{0}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="high" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -625,7 +625,7 @@
         <Parameter name="preconditioning method" type="string" value="identity" />
         <Parameter name="iterative method" type="string" value="gmres" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
@@ -669,7 +669,7 @@
       <Parameter name="number of gaseous components" type="int" value="0" />
       <Parameter name="runtime diagnostics: regions" type="Array(string)" value="{}" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="extreme" />
+        <Parameter name="verbosity level" type="string" value="medium" />
         <Parameter name="name" type="string" value="Subsurface Transport" />
       </ParameterList>
 
@@ -689,14 +689,26 @@
           <ParameterList name="SOURCE: Tracer">
             <Parameter name="regions" type="Array(string)" value="{tracer application}" />
             <Parameter name="spatial distribution method" type="string" value="volume" />
-	    <Parameter name="component names" type="Array(string)" value="{tracer}" />
+	        <Parameter name="component names" type="Array(string)" value="{tracer}" />
             <ParameterList name="source function">
               <ParameterList name="function-tabular">
                 <Parameter name="y values" type="Array(double)" value="{0.0001,0.0}" />
                 <Parameter name="x values" type="Array(double)" value="{1555200.0,17280000.0}" />
                 <Parameter name="forms" type="Array(string)" value="{constant}" />
+          <!--
+          <ParameterList name="tracer">
+            <!--  ParameterList name="SOURCE: Tracer">
+              <Parameter name="regions" type="Array(string)" value="{tracer application}" />
+              <Parameter name="component names" type="Array(string)" value="{tracer}" />
+              <Parameter name="spatial distribution method" type="string" value="volume" />
+              <ParameterList name="source function">
+                <ParameterList name="function-tabular">
+                  <Parameter name="y values" type="Array(double)" value="{0.0001,0.0}" />
+                  <Parameter name="x values" type="Array(double)" value="{1555200.0,17280000.0}" />
+                  <Parameter name="forms" type="Array(string)" value="{constant}" />
+                </ParameterList>
               </ParameterList>
-            </ParameterList>
+            <!-- /ParameterList> -->
           </ParameterList>
         </ParameterList>
       </ParameterList>
@@ -710,9 +722,22 @@
             <ParameterList name="fields">
               <Parameter name="field_out_key" type="string" value="surface-total_component_concentration" />
               <Parameter name="copy_field_out_key" type="string" value="default" />
-	      <Parameter name="field_in_key" type="string" value="total_component_concentration" />
+	          <Parameter name="field_in_key" type="string" value="total_component_concentration" />
             </ParameterList>
+          </ParameterList>
+          <!-- ParameterList name="coupling">
+            <ParameterList name="BC coupling">
+              <Parameter name="spatial distribution method" type="string" value="domain coupling" />
+              <Parameter name="submodel" type="string" value="conserved quantity" />
+              <Parameter name="regions" type="Array(string)" value="{surface}" />
+              <ParameterList name="fields">
+                <Parameter name="conserved_quantity_key" type="string" value="surface-total_component_quantity" />
+                <Parameter name="field_out_key" type="string" value="surface-total_component_concentration" />
+                <Parameter name="copy_field_out_key" type="string" value="default" />
+              </ParameterList>
             </ParameterList>
+          <!-- /ParameterList> -->
+ 
         </ParameterList>
       </ParameterList>
       
@@ -739,7 +764,7 @@
       <Parameter name="number of gaseous components" type="int" value="0" />
       <Parameter name="runtime diagnostics: regions" type="Array(string)" value="{}" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="extreme" />
+        <Parameter name="verbosity level" type="string" value="medium" />
         <Parameter name="name" type="string" value="Surface Transport" />
       </ParameterList>
 
@@ -760,14 +785,29 @@
             <Parameter name="regions" type="Array(string)" value="{surface domain}" />
             <Parameter name="spatial distribution method" type="string" value="domain coupling" />
             <Parameter name="submodel" type="string" value="rate" />
-	    <ParameterList name="fields">
-	      <Parameter name="flux_key" type="string" value="mass_flux" />
-	      <Parameter name="copy_flux_key" type="string" value="next_timestep" />
-	      <Parameter name="field_out_key" type="string" value="total_component_concentration" />
-	      <Parameter name="copy_field_out_key" type="string" value="default" />
-	      <Parameter name="field_in_key" type="string" value="surface-total_component_concentration" />
-	      <Parameter name="copy_field_in_key" type="string" value="default" />
+	        <ParameterList name="fields">
+	          <Parameter name="flux_key" type="string" value="mass_flux" />
+	          <Parameter name="copy_flux_key" type="string" value="next_timestep" />
+	          <Parameter name="field_out_key" type="string" value="total_component_concentration" />
+	          <Parameter name="copy_field_out_key" type="string" value="default" />
+	          <Parameter name="field_in_key" type="string" value="surface-total_component_concentration" />
+	          <Parameter name="copy_field_in_key" type="string" value="default" />
             </ParameterList>
+          <!--
+          <ParameterList name="surface coupling">
+            <!-- ParameterList name="Surface">
+              <Parameter name="regions" type="Array(string)" value="{surface domain}" />
+              <Parameter name="spatial distribution method" type="string" value="domain coupling" />
+              <Parameter name="submodel" type="string" value="rate" />
+              <ParameterList name="fields">
+                <Parameter name="flux_key" type="string" value="mass_flux" />
+                <Parameter name="copy_flux_key" type="string" value="next_timestep" />
+                <Parameter name="field_out_key" type="string" value="total_component_concentration" />
+                <Parameter name="copy_field_out_key" type="string" value="default" />
+                <Parameter name="field_in_key" type="string" value="surface-total_component_concentration" />
+                <Parameter name="copy_field_in_key" type="string" value="default" />
+              </ParameterList>
+            <!-- /ParameterList> -->
           </ParameterList>
         </ParameterList>
       </ParameterList>
@@ -1196,7 +1236,7 @@
         <Parameter name="save diagnostic data" type="bool" value="true" />
         <Parameter name="debug cells" type="Array(int)" value="{0}" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
       </ParameterList>
 
