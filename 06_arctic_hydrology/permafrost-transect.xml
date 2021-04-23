@@ -1,4 +1,9 @@
+<!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#main -->
+<!-- Under ParameterList required: mesh, regions, cycle driver, PKs, state  -->
+<!-- Under ParameterList optional: checkpoint, visualization, observations  -->
 <ParameterList name="Main" type="ParameterList">
+  
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#mesh -->
   <ParameterList name="mesh" type="ParameterList">
     <ParameterList name="surface" type="ParameterList">
       <Parameter name="mesh type" type="string" value="surface" />
@@ -9,6 +14,7 @@
         <Parameter name="surface sideset name" type="string" value="surface" />
       </ParameterList>
     </ParameterList>
+    
     <ParameterList name="domain" type="ParameterList">
       <Parameter name="mesh type" type="string" value="read mesh file" />
       <ParameterList name="read mesh file parameters" type="ParameterList">
@@ -16,12 +22,14 @@
         <Parameter name="format" type="string" value="Exodus II" />
       </ParameterList>
     </ParameterList>
+    
     <ParameterList name="snow" type="ParameterList">
       <Parameter name="mesh type" type="string" value="aliased" />
       <ParameterList name="aliased parameters" type="ParameterList">
         <Parameter name="alias" type="string" value="surface" />
       </ParameterList>
     </ParameterList>
+    
     <ParameterList name="snow_3d" type="ParameterList">
       <Parameter name="mesh type" type="string" value="aliased" />
       <ParameterList name="aliased parameters" type="ParameterList">
@@ -30,6 +38,7 @@
     </ParameterList>
   </ParameterList>
 
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#region -->
   <ParameterList name="regions" type="ParameterList">
     <ParameterList name="subsurface domain" type="ParameterList">
       <ParameterList name="region: all" type="ParameterList">
@@ -85,6 +94,7 @@
     </ParameterList>
   </ParameterList>
 
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#coordinator -->
   <ParameterList name="cycle driver" type="ParameterList">
     <Parameter name="start time" type="double" value="0.0" />
     <Parameter name="start time units" type="string" value="s" />
@@ -94,17 +104,22 @@
       <Parameter name="times start period stop" type="Array(double)" value="{0.0,1.0,-1.0}" />
       <Parameter name="times start period stop units" type="string" value="d" />
     </ParameterList>
+    <!-- PK tree: list of PKs -->
     <ParameterList name="PK tree" type="ParameterList">
       <ParameterList name="Top level MPC" type="ParameterList">
         <Parameter name="PK type" type="string" value="weak MPC" />
+        
         <ParameterList name="snow distribution" type="ParameterList">
           <Parameter name="PK type" type="string" value="snow distribution" />
         </ParameterList>
+        
         <ParameterList name="coupled SEB and permafrost" type="ParameterList">
           <Parameter name="PK type" type="string" value="strong MPC" />
+          
           <ParameterList name="SEB" type="ParameterList">
             <Parameter name="PK type" type="string" value="surface balance implicit subgrid" />
           </ParameterList>
+          
           <ParameterList name="permafrost surface and subsurface" type="ParameterList">
             <Parameter name="PK type" type="string" value="permafrost model" />
             <ParameterList name="subsurface flow" type="ParameterList">
@@ -119,19 +134,29 @@
             <ParameterList name="surface energy" type="ParameterList">
               <Parameter name="PK type" type="string" value="surface energy" />
             </ParameterList>
-          </ParameterList>
-        </ParameterList>
-      </ParameterList>
-    </ParameterList>
-  </ParameterList>
+          </ParameterList>    <!-- ParameterList name="permafrost surface and subsurface" mpc -->
+          
+        </ParameterList>    <!-- ParameterList name="coupled SEB and permafrost" mpc -->
+        
+      </ParameterList>    <!-- ParameterList name="Top level MPC" mpc -->
+    </ParameterList>    <!-- ParameterList name="PK tree" -->
+  </ParameterList>    <!-- ParameterList name="cycle driver" -->
+
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#pk  -->
   <ParameterList name="PKs" type="ParameterList">
 
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#mpc -->
     <ParameterList name="Top level MPC" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#physical-mpcs -->
+      <!-- currently supported physical mpcs: coupled water, coupled cells, subsurface, surface(?), permafrost, strong MPC, weak MPC -->
+
       <Parameter name="PK type" type="string" value="weak MPC" />
       <Parameter name="PKs order" type="Array(string)" value="{snow distribution,coupled SEB and permafrost}" />
 
-    </ParameterList>
+    </ParameterList>  <!-- ParameterList name="Top level MPC" -->
 
+    <!-- 'snow distribution' pk contained in 'Top level MPC' -->
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#snow-distribution-pk -->
     <ParameterList name="snow distribution" type="ParameterList">
       <Parameter name="PK type" type="string" value="snow distribution" />
       <Parameter name="primary variable key" type="string" value="snow-precipitation" />
@@ -229,16 +254,22 @@
         </ParameterList>
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList>     <!-- ParameterList name='snow distribution' pk -->
 
+    <!-- 'coupled SEB and permafrost' (sub-)MPC, which including 2 more level sub-mpc, contained in 'Top level MPC' -->
     <ParameterList name="coupled SEB and permafrost" type="ParameterList">
       <Parameter name="PK type" type="string" value="strong MPC" />
       <Parameter name="PKs order" type="Array(string)" value="{SEB, permafrost surface and subsurface}" />
+
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#timeintegrator -->
+      <!-- NOTE: this applies for all pks included in this sub-MPC -->
       <ParameterList name="time integrator" type="ParameterList">
         <Parameter name="extrapolate initial guess" type="bool" value="true" />
+
+        <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#nonlinear-solver  -->
         <Parameter name="solver type" type="string" value="nka_bt_ats" />
-        <Parameter name="timestep controller type" type="string" value="smarter" />
         <ParameterList name="nka_bt_ats parameters" type="ParameterList">
+           <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#solver-nka-with-backtracking-ats -->
           <Parameter name="nka lag iterations" type="int" value="2" />
           <Parameter name="max backtrack steps" type="int" value="10" />
           <Parameter name="max total backtrack steps" type="int" value="20" />
@@ -253,9 +284,13 @@
             <Parameter name="verbosity level" type="string" value="high" />
           </ParameterList>
         </ParameterList>
+
         <ParameterList name="verbose object" type="ParameterList">
           <Parameter name="verbosity level" type="string" value="high" />
         </ParameterList>
+        
+        <!--https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#timestep-controller  -->
+        <Parameter name="timestep controller type" type="string" value="smarter" />
         <ParameterList name="timestep controller smarter parameters" type="ParameterList">
           <Parameter name="max iterations" type="int" value="18" />
           <Parameter name="min iterations" type="int" value="10" />
@@ -272,8 +307,9 @@
         <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList> <!-- ParameterList name="coupled SEB and permafrost" sub-MPC -->
 
+    <!-- 'surface subsurface permafrost' sub-sub-mpc included in "coupled SEB and permafrost" sub-MPC'-->
     <ParameterList name="permafrost surface and subsurface" type="ParameterList">
       <Parameter name="PK type" type="string" value="permafrost model" />
       <Parameter name="PKs order" type="Array(string)" value="{subsurface flow, subsurface energy, surface flow, surface energy}" />
@@ -311,9 +347,11 @@
         </ParameterList>
       </ParameterList>
 
+      <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#linear-solvers -->
+      <!--  3 methods: direct, iterative, preconditioning method -->
+      <!-- NOTE: here bracketed within 'surface subsurface permafrpst' sub-sub-mpc, so applying for all 4 PKs contained in mpc -->
       <ParameterList name="inverse" type="ParameterList">
         <Parameter name="preconditioning method" type="string" value="boomer amg" />
-        <Parameter name="iterative method" type="string" value="gmres" />
         <ParameterList name="boomer amg parameters" type="ParameterList">
           <Parameter name="cycle applications" type="int" value="1" />
           <Parameter name="smoother sweeps" type="int" value="4" />
@@ -321,9 +359,8 @@
           <Parameter name="tolerance" type="double" value="0.0" />
           <Parameter name="number of functions" type="int" value="2" />
         </ParameterList>
-        <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
-        </ParameterList>
+
+        <Parameter name="iterative method" type="string" value="gmres" />
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
           <Parameter name="error tolerance" type="double" value="1e-06" />
@@ -333,11 +370,13 @@
             <Parameter name="verbosity level" type="string" value="high" />
           </ParameterList>
         </ParameterList>
-      </ParameterList>
+      </ParameterList>    <!-- ParameterList name="inverse" -->
 
-    </ParameterList>
+    </ParameterList>      <!-- ParameterList name="surface subsurface permafrost" sub-sub-mpc -->
 
+    <!-- 'subsurface flow' pk included in 'surface subsurface permafrost' sub-sub-mpc under 'coupled SEB and permafrost' sub-mpc -->
     <ParameterList name="subsurface flow" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#permafrost-flow-pk -->
       <Parameter name="PK type" type="string" value="permafrost flow" />
       <Parameter name="primary variable key" type="string" value="pressure" />
       <Parameter name="source term" type="bool" value="true" />
@@ -354,17 +393,24 @@
         <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#pde-diffusion -->
       <ParameterList name="diffusion" type="ParameterList">
         <Parameter name="discretization primary" type="string" value="mfd: two-point flux approximation" />
       </ParameterList>
 
+      <!-- optional, The inverse of the diffusion operator, i.e. pde-diffusion above -->
       <ParameterList name="diffusion preconditioner" type="ParameterList">
         <Parameter name="Newton correction" type="string" value="approximate Jacobian" />
       </ParameterList>
 
       <ParameterList name="boundary conditions" type="ParameterList">
+        <!-- valid name for flow:   pressure, head, fixed level, for Dirichlet-Type BCs, -->
+        <!--                    OR, mass flux, fixed level flux, for Neuwman-Type BCs,   -->
+        <!--                    OR, seepage face pressure, seepage face head, seepage face with infiltration, zero gradient, critical depth, for specific situations, -->
+        <!--                    OR, dynamic, for mixed type-->
       </ParameterList>
 
+      <!-- real initial condition for subsurface permafrost flow pk -->
       <ParameterList name="initial condition" type="ParameterList">
         <Parameter name="initialize faces from cells" type="bool" value="true" />
         <ParameterList name="initialize from 1D column" type="ParameterList">
@@ -376,6 +422,7 @@
         </ParameterList>
       </ParameterList>
 
+      <!-- specific to Richards + permafrost Water Retention Curve model -->
       <ParameterList name="water retention evaluator" type="ParameterList">
         <Parameter name="minimum rel perm cutoff" type="double" value="0.0" />
         <Parameter name="use surface rel perm" type="bool" value="true" />
@@ -388,6 +435,7 @@
             <Parameter name="residual saturation [-]" type="double" value="0.05" />
             <Parameter name="smoothing interval width [saturation]" type="double" value="0.05" />
           </ParameterList>
+          
           <ParameterList name="mineral" type="ParameterList">
             <Parameter name="region" type="string" value="subsurface domain mineral" />
             <Parameter name="WRM Type" type="string" value="van Genuchten" />
@@ -397,15 +445,18 @@
             <Parameter name="smoothing interval width [saturation]" type="double" value="0.05" />
           </ParameterList>
         </ParameterList>
+        
         <ParameterList name="permafrost model parameters" type="ParameterList">
           <Parameter name="permafrost WRM type" type="string" value="fpd permafrost model" />
           <Parameter name="minimum dsi_dpressure magnitude" type="double" value="1e-12" />
         </ParameterList>
-      </ParameterList>
+      </ParameterList>    <!-- ParameterList name="water retention evaluator" -->
 
-    </ParameterList>
+    </ParameterList>      <!-- ParameterList name='subsurface flow'pk -->
 
+    <!-- 'surface flow' pk included in 'surface subsurface permafrost' sub-sub-mpc under 'coupled SEB and permafrost' sub-mpc -->
     <ParameterList name="surface flow" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#overland-flow-with-ice -->
       <Parameter name="PK type" type="string" value="overland flow with ice" />
       <Parameter name="primary variable key" type="string" value="surface-pressure" />
       <Parameter name="domain name" type="string" value="surface" />
@@ -444,9 +495,15 @@
         <Parameter name="initialize surface head from subsurface" type="bool" value="true" />
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList>  <!-- ParameterList name='surface flow' pk -->
 
+    <!-- 'energy' pks for 'surface subsurface permafrost' sub-sub-mpc -->
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#energy-pks -->
+    <!-- currently supported energy PKs: energy base, two-phase energy, three-phase energy, overland energy with ice -->
+
+    <!-- 'subsurface energy' pk included in 'surface subsurface permafrost' sub-sub-mpc under 'coupled SEB and permafrost' sub-mpc -->
     <ParameterList name="subsurface energy" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#three-phase-subsurface-energy-pk -->
       <Parameter name="PK type" type="string" value="three-phase energy" />
       <Parameter name="primary variable key" type="string" value="temperature" />
       <Parameter name="source term" type="bool" value="true" />
@@ -459,10 +516,12 @@
         <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
+      <!-- operator for energy: pde-diffusion -->
       <ParameterList name="diffusion" type="ParameterList">
         <Parameter name="discretization primary" type="string" value="mfd: two-point flux approximation" />
       </ParameterList>
 
+      <!-- bc for energy -->
       <ParameterList name="boundary conditions" type="ParameterList">
         <ParameterList name="temperature" type="ParameterList">
           <ParameterList name="bottom" type="ParameterList">
@@ -476,6 +535,7 @@
         </ParameterList>
       </ParameterList>
 
+      <!-- ic for energy -->
       <ParameterList name="initial condition" type="ParameterList">
         <Parameter name="initialize faces from cells" type="bool" value="true" />
         <ParameterList name="initialize from 1D column" type="ParameterList">
@@ -487,6 +547,7 @@
         </ParameterList>
       </ParameterList>
 
+      <!-- specific to thermal conductivity model -->
       <ParameterList name="thermal conductivity evaluator" type="ParameterList">
         <ParameterList name="thermal conductivity parameters" type="ParameterList">
           <ParameterList name="peat" type="ParameterList">
@@ -497,6 +558,7 @@
             <Parameter name="unsaturated alpha frozen [-]" type="double" value="1.0" />
             <Parameter name="unsaturated alpha unfrozen [-]" type="double" value="0.5" />
           </ParameterList>
+          
           <ParameterList name="mineral" type="ParameterList">
             <Parameter name="region" type="string" value="subsurface domain mineral" />
             <Parameter name="thermal conductivity type" type="string" value="three-phase wet/dry" />
@@ -512,8 +574,9 @@
         <Parameter name="include work term" type="bool" value="false" />
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList>  <!-- ParameterList name='subsurface energy' pk -->
 
+    <!-- 'surface energy' pk included in 'surface subsurface permafrost' sub-sub-mpc under 'coupled SEB and permafrost' sub-mpc -->
     <ParameterList name="surface energy" type="ParameterList">
       <Parameter name="PK type" type="string" value="surface energy" />
       <Parameter name="primary variable key" type="string" value="surface-temperature" />
@@ -562,9 +625,12 @@
         <Parameter name="include work term" type="bool" value="false" />
       </ParameterList>
 
-    </ParameterList>
-
+    </ParameterList>  <!-- ParameterList name='surface energy' pk -->
+    
+    <!-- 'SEB' pk included under 'coupled SEB and permafrost' sub-mpc -->
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#surface-energy-balance-pks -->
     <ParameterList name="SEB" type="ParameterList">
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#snow-balance-equation -->
       <Parameter name="PK type" type="string" value="surface balance implicit subgrid" />
       <Parameter name="layer name" type="string" value="snow" />
       <Parameter name="domain name" type="string" value="snow" />
@@ -586,25 +652,37 @@
         </ParameterList>
       </ParameterList>
 
+      <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#linear-solvers -->
+      <!--  3 methods: direct, iterative, preconditioning method -->
+      <!-- NOTE: here only bracketed within 'SEB' pk -->
       <ParameterList name="inverse" type="ParameterList">
         <Parameter name="preconditioning method" type="string" value="identity" />
         <Parameter name="iterative method" type="string" value="gmres" />
-        <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
-        </ParameterList>
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
           <Parameter name="error tolerance" type="double" value="1e-06" />
           <Parameter name="convergence criteria" type="Array(string)" value="{relative residual,make one iteration}" />
           <Parameter name="maximum number of iteration" type="int" value="80" />
         </ParameterList>
+        
+        <ParameterList name="verbose object" type="ParameterList">
+          <Parameter name="verbosity level" type="string" value="high" />
+        </ParameterList>
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList>     <!-- ParameterList name='SEB' pk -->
 
-  </ParameterList>
+  </ParameterList>     <!-- ParameterList name='PKs' -->
 
+
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#state -->
   <ParameterList name="state" type="ParameterList">
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#field-evaluators -->
+    <!-- these state variables under 'field evaluators', some are common while some specific to PK,
+        and some are required while others may be optional.
+        They are all outputs in h5 as configured in 'visualization' parameter-list block.
+        But may not all output as configured in 'observation' parameter-list block (have to explicitly pick one or more state.
+     -->
     <ParameterList name="field evaluators" type="ParameterList">
 
       <ParameterList name="water_content" type="ParameterList">
@@ -1026,9 +1104,11 @@
         </ParameterList>
       </ParameterList>
 
-    </ParameterList>
-    <ParameterList name="initial conditions" type="ParameterList">
+    </ParameterList> <!-- ParameterList name="field evaluators" -->
 
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#initialconditions -->
+    <!-- NOT really initial conditions, suggested to rename -->
+    <ParameterList name="initial conditions" type="ParameterList">
       <ParameterList name="atmospheric_pressure" type="ParameterList">
         <Parameter name="value" type="double" value="101325.0" />
       </ParameterList>
@@ -1036,26 +1116,43 @@
       <ParameterList name="gravity" type="ParameterList">
         <Parameter name="value" type="Array(double)" value="{0.0,0.0,-9.80665}" />
       </ParameterList>
-
     </ParameterList>
+    
+  </ParameterList> <!-- ParameterList name="state" -->
+ 
+
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#checkpoint -->
+  <ParameterList name="checkpoint" type="ParameterList">
+    <!-- OPTIONAL. If omitted, by default, ats will produce a restart h5 at end.  -->
+    <Parameter name="times start period stop 0" type="Array(double)" value="{0.0,10.0,-1.0}" />
+    <Parameter name="times start period stop 0 units" type="string" value="noleap" />
   </ParameterList>
+
+
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#visualization -->  
   <ParameterList name="visualization" type="ParameterList">
+    <!-- OPTIONAL. Usually in h5 format with .xmf notation, good to VISIT visualization tool -->
     <ParameterList name="domain" type="ParameterList">
       <Parameter name="times start period stop 0" type="Array(double)" value="{0.0,1.0,-1.0}" />
       <Parameter name="times start period stop 0 units" type="string" value="d" />
     </ParameterList>
+    
     <ParameterList name="surface" type="ParameterList">
       <Parameter name="times start period stop 0" type="Array(double)" value="{0.0,1.0,-1.0}" />
       <Parameter name="times start period stop 0 units" type="string" value="d" />
     </ParameterList>
+    
     <ParameterList name="snow" type="ParameterList">
       <Parameter name="times start period stop 0" type="Array(double)" value="{0.0,1.0,-1.0}" />
       <Parameter name="times start period stop 0 units" type="string" value="d" />
     </ParameterList>
   </ParameterList>
 
-  <ParameterList name="checkpoint" type="ParameterList">
-    <Parameter name="times start period stop 0" type="Array(double)" value="{0.0,10.0,-1.0}" />
-    <Parameter name="times start period stop 0 units" type="string" value="noleap" />
+  
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#observation -->
+  <ParameterList name="observation" type="ParameterList">
+    <!-- OPTIONAL. Usually in ascii format -->
   </ParameterList>
+
+
 </ParameterList>
