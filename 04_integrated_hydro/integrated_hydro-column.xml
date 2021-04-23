@@ -1,5 +1,11 @@
+<!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#main -->
+<!-- Under ParameterList required: mesh, regions, cycle driver, PKs, state  -->
+<!-- Under ParameterList optional: checkpoint, visualization, observations  -->
 <ParameterList name="Main" type="ParameterList">
+  
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#mesh -->
   <ParameterList name="mesh" type="ParameterList">
+    
     <ParameterList name="surface" type="ParameterList">
       <Parameter name="mesh type" type="string" value="surface" />
       <ParameterList name="surface parameters" type="ParameterList">
@@ -8,6 +14,7 @@
       <ParameterList name="surface">
       </ParameterList>
     </ParameterList>
+    
     <ParameterList name="domain" type="ParameterList">
       <Parameter name="mesh type" type="string" value="generate mesh" />
       <ParameterList name="generate mesh parameters" type="ParameterList">
@@ -18,6 +25,7 @@
     </ParameterList>
   </ParameterList>
 
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#region -->
   <ParameterList name="regions" type="ParameterList">
     <ParameterList name="computational domain" type="ParameterList">
       <ParameterList name="region: box" type="ParameterList">
@@ -81,6 +89,7 @@
     </ParameterList>
   </ParameterList>
 
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#coordinator -->
   <ParameterList name="coordinator" type="ParameterList">
     <Parameter name="start time" type="double" value="0.0" />
     <Parameter name="start time units" type="string" value="s" />
@@ -93,28 +102,44 @@
     <Parameter name="start time units" type="string" value="s" />
     <Parameter name="end time" type="double" value="2.0" />
     <Parameter name="end time units" type="string" value="d" />
+    <!-- PK tree: list of PKs -->
     <ParameterList name="PK tree" type="ParameterList">
       <ParameterList name="Top level MPC" type="ParameterList">
         <Parameter name="PK type" type="string" value="coupled water" />
-        <ParameterList name="flow" type="ParameterList">
+        <!-- The name, e.g. "subsurface flow", user-defined BUT must be matching exactly within those in 'PKs' below  -->
+        <ParameterList name="subsurface flow" type="ParameterList">
+          <!-- "PK type" value must be from the registered in ATS (exactly match)  -->
           <Parameter name="PK type" type="string" value="richards flow" />
         </ParameterList>
-        <ParameterList name="overland flow" type="ParameterList">
+        <!-- The name, e.g. "surface flow", user-defined BUT must be matching exactly within those in 'PKs' below  -->
+        <ParameterList name="surface flow" type="ParameterList">
+          <!-- "PK type" value must be from the registered in ATS (exactly match)  -->
           <Parameter name="PK type" type="string" value="overland flow, pressure basis" />
         </ParameterList>
       </ParameterList>
     </ParameterList>
   </ParameterList>
+
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#pk  -->
   <ParameterList name="PKs" type="ParameterList">
 
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#mpc -->
     <ParameterList name="Top level MPC" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#physical-mpcs -->
+      <!-- currently supported physical mpcs: coupled water, coupled cells, subsurface, surface(?), permafrost -->
+      
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#coupled-water-mpc -->
       <Parameter name="PK type" type="string" value="coupled water" />
-      <Parameter name="PKs order" type="Array(string)" value="{flow, overland flow}" />
+      <Parameter name="PKs order" type="Array(string)" value="{subsurface flow,surface flow}" />
+      
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#timeintegrator -->
       <ParameterList name="time integrator" type="ParameterList">
         <Parameter name="extrapolate initial guess" type="bool" value="true" />
+
+        <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#nonlinear-solver  -->
         <Parameter name="solver type" type="string" value="nka_bt_ats" />
-        <Parameter name="timestep controller type" type="string" value="smarter" />
         <ParameterList name="nka_bt_ats parameters" type="ParameterList">
+           <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#solver-nka-with-backtracking-ats -->
           <Parameter name="nka lag iterations" type="int" value="2" />
           <Parameter name="max backtrack steps" type="int" value="5" />
           <Parameter name="backtrack lag" type="int" value="0" />
@@ -127,9 +152,9 @@
             <Parameter name="verbosity level" type="string" value="high" />
           </ParameterList>
         </ParameterList>
-        <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="high" />
-        </ParameterList>
+        
+        <!--https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#timestep-controller  -->
+        <Parameter name="timestep controller type" type="string" value="smarter" />
         <ParameterList name="timestep controller smarter parameters" type="ParameterList">
           <Parameter name="max iterations" type="int" value="18" />
           <Parameter name="min iterations" type="int" value="10" />
@@ -140,7 +165,12 @@
           <Parameter name="growth wait after fail" type="int" value="2" />
           <Parameter name="count before increasing increase factor" type="int" value="2" />
         </ParameterList>
-      </ParameterList>
+
+        <ParameterList name="verbose object" type="ParameterList">
+          <Parameter name="verbosity level" type="string" value="high" />
+        </ParameterList>
+        
+      </ParameterList> <!-- ParameterList name="time integrator" -->
 
       <ParameterList name="water delegate" type="ParameterList">
         <Parameter name="modify predictor damp and cap the water spurt" type="bool" value="true" />
@@ -153,31 +183,36 @@
 
       <ParameterList name="inverse" type="ParameterList">
         <Parameter name="preconditioning method" type="string" value="boomer amg" />
-        <Parameter name="iterative method" type="string" value="gmres" />
         <ParameterList name="boomer amg parameters" type="ParameterList">
           <Parameter name="cycle iterations" type="int" value="3" />
           <Parameter name="smoother sweeps" type="int" value="2" />
           <Parameter name="strong threshold" type="double" value="0.5" />
           <Parameter name="tolerance" type="double" value="0.0" />
         </ParameterList>
-        <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="medium" />
-        </ParameterList>
+
+        <Parameter name="iterative method" type="string" value="gmres" />
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
           <Parameter name="error tolerance" type="double" value="1e-06" />
           <Parameter name="convergence criteria" type="Array(string)" value="{relative residual,make one iteration}" />
           <Parameter name="maximum number of iteration" type="int" value="80" />
         </ParameterList>
+
+        <ParameterList name="verbose object" type="ParameterList">
+          <Parameter name="verbosity level" type="string" value="medium" />
+        </ParameterList>
+
       </ParameterList>
 
       <ParameterList name="verbose object" type="ParameterList">
         <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList> <!-- ParameterList name="Top level MPC" -->
 
-    <ParameterList name="flow" type="ParameterList">
+    <!-- 'subsurface flow' pk for 'coupled water' mpc -->
+    <ParameterList name="subsurface flow" type="ParameterList">
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#richards-pk -->
       <Parameter name="PK type" type="string" value="richards flow" />
       <Parameter name="primary variable key" type="string" value="pressure" />
       <Parameter name="initial time step" type="double" value="10.0" />
@@ -187,15 +222,21 @@
         <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
+      <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#pde-diffusion -->
       <ParameterList name="diffusion" type="ParameterList">
         <Parameter name="discretization primary" type="string" value="mfd: optimized for sparsity" />
       </ParameterList>
 
+      <!-- optional, The inverse of the diffusion operator, i.e. pde-diffusion above -->
       <ParameterList name="diffusion preconditioner" type="ParameterList">
         <Parameter name="Newton correction" type="string" value="approximate Jacobian" />
       </ParameterList>
 
       <ParameterList name="boundary conditions" type="ParameterList">
+        <!-- valid name for flow:   pressure, head, fixed level, for Dirichlet-Type BCs, -->
+        <!--                    OR, mass flux, fixed level flux, for Neuwman-Type BCs,   -->
+        <!--                    OR, seepage face pressure, seepage face head, seepage face with infiltration, zero gradient, critical depth, for specific situations, -->
+        <!--                    OR, dynamic, for mixed type-->
         <ParameterList name="mass flux" type="ParameterList">
           <ParameterList name="base flow" type="ParameterList">
             <Parameter name="regions" type="Array(string)" value="{bottom face}" />
@@ -208,6 +249,7 @@
         </ParameterList>
       </ParameterList>
 
+      <!-- real initial condition for subsurface flow pk -->
       <ParameterList name="initial condition" type="ParameterList">
         <ParameterList name="function" type="ParameterList">
           <ParameterList name="initial pressure cells" type="ParameterList">
@@ -224,6 +266,7 @@
         </ParameterList>
       </ParameterList>
 
+      <!-- specific to Richards PK -->
       <ParameterList name="water retention evaluator" type="ParameterList">
         <Parameter name="minimum rel perm cutoff" type="double" value="0.0" />
         <Parameter name="use surface rel perm" type="bool" value="true" />
@@ -242,9 +285,12 @@
         </ParameterList>
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList> <!-- ParameterList name="subsurface flow" -->
 
-    <ParameterList name="overland flow" type="ParameterList">
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#overland-flow-pk -->
+    <!-- 'surface flow' pk included 'coupled water ' mpc -->
+    <ParameterList name="surface flow" type="ParameterList">
+      
       <Parameter name="PK type" type="string" value="overland flow, pressure basis" />
       <Parameter name="primary variable key" type="string" value="surface-pressure" />
       <Parameter name="domain name" type="string" value="surface" />
@@ -257,22 +303,32 @@
         <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
+      <!-- operator for surface flow: pde-diffusion -->
       <ParameterList name="diffusion" type="ParameterList">
         <Parameter name="discretization primary" type="string" value="fv: default" />
       </ParameterList>
 
+      <!-- bc for surface flow -->
       <ParameterList name="boundary conditions" type="ParameterList">
       </ParameterList>
 
+      <!-- ic for surface flow -->
       <ParameterList name="initial condition" type="ParameterList">
         <Parameter name="initialize surface head from subsurface" type="bool" value="true" />
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList> <!-- ParameterList name="surface flow" -->
 
-  </ParameterList>
+  </ParameterList> <!-- ParameterList name="PKs" -->
 
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#state -->
   <ParameterList name="state" type="ParameterList">
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#field-evaluators -->
+    <!-- these state variables under 'field evaluators', some are common while some specific to PK,
+        and some are required while others may be optional. 
+        They are all outputs in h5 as configured in 'visualization' parameter-list block.
+        But may not all output as configured in 'observation' parameter-list block (have to explicitly pick one or more state.
+     -->
     <ParameterList name="field evaluators" type="ParameterList">
 
       <ParameterList name="precipitation_rain" type="ParameterList">
@@ -507,9 +563,11 @@
         </ParameterList>
       </ParameterList>
 
-    </ParameterList>
+    </ParameterList> <!-- ParameterList name="field evaluators" -->
+    
+    <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#initialconditions -->
+    <!-- NOT really initial conditions, suggested to rename -->
     <ParameterList name="initial conditions" type="ParameterList">
-
       <ParameterList name="atmospheric_pressure" type="ParameterList">
         <Parameter name="value" type="double" value="101325.0" />
       </ParameterList>
@@ -519,8 +577,16 @@
       </ParameterList>
 
     </ParameterList>
-  </ParameterList>
+  </ParameterList> <!-- ParameterList name="state" -->
+ 
+ <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#checkpoint -->
+ <ParameterList name="checkpoint" type="ParameterList">
+   <!-- OPTIONAL. If omitted, by default, ats will produce a restart h5 at end.  -->
+ </ParameterList>
+ 
+  <!-- https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#visualization -->  
   <ParameterList name="visualization">
+    <!-- OPTIONAL. Usually in h5 format with .xmf notation, good to VISIT visualization tool -->
     <ParameterList name="domain" type="ParameterList">
       <Parameter name="times start period stop" type="Array(double)" value="{0.0,864.0,-1.0}" />
     </ParameterList>
@@ -528,4 +594,11 @@
       <Parameter name="times start period stop" type="Array(double)" value="{0.0,864.0,-1.0}" />
     </ParameterList>
   </ParameterList>
+    
+  <!--  https://amanzi.github.io/ats/input_spec/ATSNativeSpec_dev.html#observation -->
+  <ParameterList name="observation" type="ParameterList">
+    <!-- OPTIONAL. Usually in ascii format -->
+  </ParameterList>
+
 </ParameterList>
+
