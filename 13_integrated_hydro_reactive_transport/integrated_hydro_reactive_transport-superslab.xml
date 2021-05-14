@@ -1,25 +1,4 @@
 <ParameterList name="Main" type="ParameterList">
-
-  <ParameterList name="mesh" type="ParameterList">
-    <ParameterList name="surface" type="ParameterList">
-      <Parameter name="mesh type" type="string" value="surface" />
-      <ParameterList name="surface parameters" type="ParameterList">
-        <Parameter name="surface sideset name" type="string" value="surface" />
-      </ParameterList>
-      <ParameterList name="surface">
-      </ParameterList>
-    </ParameterList>
-    <ParameterList name="domain" type="ParameterList">
-      <Parameter name="mesh type" type="string" value="read mesh file" />
-      <Parameter name="build columns from set" type="string" value="surface" />
-      <ParameterList name="read mesh file parameters" type="ParameterList">
-        <Parameter name="file" type="string" value="../../04_integrated_hydro/data/super_slab.exo" />
-        <Parameter name="format" type="string" value="Exodus II" />
-      </ParameterList>
-    </ParameterList>
-  </ParameterList>
-
-
   <ParameterList name="regions" type="ParameterList">
     <ParameterList name="subsurface domain" type="ParameterList">
       <ParameterList name="region: all" type="ParameterList">
@@ -69,15 +48,30 @@
     </ParameterList>
   </ParameterList>
 
+  <ParameterList name="mesh" type="ParameterList">
+    <ParameterList name="surface" type="ParameterList">
+      <Parameter name="mesh type" type="string" value="surface" />
+      <ParameterList name="surface parameters" type="ParameterList">
+        <Parameter name="surface sideset name" type="string" value="surface" />
+      </ParameterList>
+      <ParameterList name="surface">
+      </ParameterList>
+    </ParameterList>
+    <ParameterList name="domain" type="ParameterList">
+      <Parameter name="mesh type" type="string" value="read mesh file" />
+      <Parameter name="build columns from set" type="string" value="surface" />
+      <ParameterList name="read mesh file parameters" type="ParameterList">
+        <Parameter name="file" type="string" value="../../04_integrated_hydro/data/super_slab.exo" />
+        <Parameter name="format" type="string" value="Exodus II" />
+      </ParameterList>
+    </ParameterList>
+  </ParameterList>
+
   <ParameterList name="cycle driver" type="ParameterList">
     <Parameter name="start time" type="double" value="0.0" />
-    
     <Parameter name="start time units" type="string" value="s" />
-    
     <Parameter name="end time" type="double" value="18000.0" />
-    
     <Parameter name="end time units" type="string" value="s" />
-    
     <ParameterList name="PK tree" type="ParameterList">
       <ParameterList name="flow and reactive transport">
         <Parameter name="PK type" type="string" value="flow reactive transport" />
@@ -114,7 +108,6 @@
       </ParameterList>
     </ParameterList>
   </ParameterList>
-  
   <ParameterList name="PKs" type="ParameterList">
 
     <ParameterList name="flow and reactive transport">
@@ -122,7 +115,7 @@
       <Parameter name="PKs order" type="Array(string)" value="{flow coupler, reactive transport coupler}" />
       <Parameter name="master PK index" type="int" value="0" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
     </ParameterList>
@@ -131,16 +124,16 @@
       <Parameter name="PK type" type="string" value="coupled water" />
       <Parameter name="PKs order" type="Array(string)" value="{subsurface flow,surface flow}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="water delegate" type="ParameterList">
         <Parameter name="modify predictor damp and cap the water spurt" type="bool" value="true" />
         <Parameter name="damp and cap the water spurt" type="bool" value="true" />
         <Parameter name="cap over atmospheric" type="double" value="0.001" />
-        <Parameter name="debug cells" type="Array(int)" value="{1}" />
+        <Parameter name="debug cells" type="Array(int)" value="{}" />
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="low" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
       </ParameterList>
 
@@ -155,7 +148,7 @@
           <Parameter name="number of functions" type="int" value="1" />
         </ParameterList>
         <ParameterList name="verbose object" type="ParameterList">
-          <Parameter name="verbosity level" type="string" value="low" />
+          <Parameter name="verbosity level" type="string" value="medium" />
         </ParameterList>
         <ParameterList name="gmres parameters" type="ParameterList">
           <Parameter name="preconditioning strategy" type="string" value="left" />
@@ -179,7 +172,7 @@
           <Parameter name="diverged tolerance" type="double" value="100000.0" />
           <Parameter name="limit iterations" type="int" value="21" />
           <ParameterList name="verbose object" type="ParameterList">
-            <Parameter name="verbosity level" type="string" value="low" />
+            <Parameter name="verbosity level" type="string" value="medium" />
           </ParameterList>
         </ParameterList>
         <ParameterList name="timestep controller smarter parameters" type="ParameterList">
@@ -205,7 +198,7 @@
       <Parameter name="permeability rescaling" type="double" value="10000000.0" />
       <Parameter name="debug cells" type="Array(int)" value="{1}" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -266,7 +259,7 @@
       <Parameter name="debug cells" type="Array(int)" value="{0}" />
       <Parameter name="source term is differentiable" type="bool" value="true" />
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="medium" />
       </ParameterList>
 
       <ParameterList name="diffusion" type="ParameterList">
@@ -339,7 +332,7 @@
       </ParameterList>
 
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
     </ParameterList>
@@ -376,7 +369,7 @@
       </ParameterList>
 
       <ParameterList name="verbose object" type="ParameterList">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
     </ParameterList>
@@ -386,7 +379,7 @@
       <Parameter name="PKs order" type="Array(string)" value="{subsurface transport, surface transport}" />
       <Parameter name="component names" type="Array(string)" value="{H+, HCO3-, Ca++}" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
     </ParameterList>
@@ -403,12 +396,12 @@
       <Parameter name="spatial discretization order" type="int" value="1" />
       <Parameter name="temporal discretization order" type="int" value="1" />
       <Parameter name="cfl" type="double" value="1.0" />
-      <Parameter name="enable internal tests" type="string" value="no" />
+      <Parameter name="enable internal tests" type="bool" value="false" />
       <Parameter name="transport subcycling" type="bool" value="false" />
       <Parameter name="number of aqueous components" type="int" value="3" />
       <Parameter name="number of gaseous components" type="int" value="0" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
       <ParameterList name="reconstruction">
@@ -425,7 +418,7 @@
           <Parameter name="error tolerance" type="double" value="1e-10" />
           <Parameter name="convergence criteria" type="Array(string)" value="{relative rhs, make one iteration}" />
           <ParameterList name="verbose object">
-            <Parameter name="verbosity level" type="string" value="low" />
+            <Parameter name="verbosity level" type="string" value="high" />
           </ParameterList>
         </ParameterList>
         <ParameterList name="boomer amg parameters">
@@ -434,7 +427,7 @@
           <Parameter name="cycle applications" type="int" value="1" />
           <Parameter name="strong threshold" type="double" value="0.65" />
           <ParameterList name="verbose object">
-            <Parameter name="verbosity level" type="string" value="low" />
+            <Parameter name="verbosity level" type="string" value="medium" />
           </ParameterList>
         </ParameterList>
       </ParameterList>
@@ -474,13 +467,13 @@
       <Parameter name="temporal discretization order" type="int" value="1" />
       <Parameter name="cfl" type="double" value="1.0" />
       <Parameter name="water tolerance" type="double" value="0.001" />
-      <Parameter name="enable internal tests" type="string" value="no" />
+      <Parameter name="enable internal tests" type="bool" value="false" />
       <Parameter name="transport subcycling" type="bool" value="false" />
       <Parameter name="number of aqueous components" type="int" value="3" />
       <Parameter name="number of gaseous components" type="int" value="0" />
       <Parameter name="runtime diagnostics: regions" type="Array(string)" value="{}" />
       <ParameterList name="verbose object">
-        <Parameter name="verbosity level" type="string" value="low" />
+        <Parameter name="verbosity level" type="string" value="high" />
       </ParameterList>
 
       <ParameterList name="reconstruction">
@@ -502,7 +495,7 @@
           <Parameter name="error tolerance" type="double" value="1e-10" />
           <Parameter name="convergence criteria" type="Array(string)" value="{relative rhs, make one iteration}" />
           <ParameterList name="verbose object">
-            <Parameter name="verbosity level" type="string" value="low" />
+            <Parameter name="verbosity level" type="string" value="high" />
           </ParameterList>
         </ParameterList>
         <ParameterList name="boomer amg parameters">
